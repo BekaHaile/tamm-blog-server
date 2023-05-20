@@ -1,5 +1,3 @@
-import genderEnum from "../constants/gender";
-
 module.exports = (sequelize, Sequelize) => {
   return sequelize.define("users", {
     id: {

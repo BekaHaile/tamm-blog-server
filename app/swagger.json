@@ -1,0 +1,369 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Blog CRUD",
+    "description": "This is swagger documentation of api endpoints"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:{Port}/{basePath}",
+      "description": "Local Test Server",
+      "variables": {
+        "Port": {
+          "default": "3000"
+        },
+        "basePath": {
+          "default": "api/v1"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "API for Auth service in the system"
+    },
+    {
+      "name": "Blogs",
+      "description": "API for blogs"
+    }
+  ],
+
+  "schemes": ["http", "https"],
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json"],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register a new user!",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "img": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Register a new user"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/SignUpResponse"
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login a user!",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Login Data"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/LoginResponse"
+            }
+          }
+        }
+      }
+    },
+
+    "/blogs/": {
+      "get": {
+        "tags": ["Blog"],
+        "summary": "Returns list of blogs",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Blogs"
+            }
+          }
+        }
+      }
+    },
+    "/blogs/:id": {
+      "get": {
+        "tags": ["Blog"],
+        "summary": "Returns a single blog with the specified id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/BlogResponse"
+            }
+          }
+        }
+      }
+    },
+    "/blogs": {
+      "post": {
+        "tags": ["Blog"],
+        "summary": "Create a new blog!",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "img": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Add blog data"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/BlogResponse"
+            }
+          }
+        }
+      }
+    },
+    "/blogs/:blogId/": {
+      "put": {
+        "tags": ["Blog"],
+        "summary": "Returns a single blog with the specified Id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/BlogResponse"
+            }
+          }
+        }
+      }
+    },
+    "/blogs/:id/": {
+      "delete": {
+        "tags": ["Blog"],
+        "summary": "Archives a single blog with the specified id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/BlogResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SignUpRequest": {
+        "required": true,
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SignUpResponse": {
+        "required": ["id"],
+        "$ref": "#/components/schemas/User"
+      },
+      "LoginRequest": {
+        "required": true,
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginResponse": {
+        "required": ["id"],
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "accessToken": {
+            "type": "string"
+          }
+        }
+      },
+      "BlogRequest": {
+        "required": true,
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "img": {
+            "type": "string"
+          }
+        }
+      },
+      "BlogResponse": {
+        "required": ["id"],
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/Blog"
+          },
+          "accessToken": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "uniqueItems": true
+          },
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "img": {
+            "type": "string"
+          }
+        }
+      },
+      "Users": {
+        "type": "array",
+        "$ref": "#/components/schemas/User"
+      },
+      "Blog": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "uniqueItems": true
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "img": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          }
+        }
+      },
+      "Blogs": {
+        "type": "array",
+        "$ref": "#/components/schemas/Blog"
+      }
+    },
+    "parameters": {
+      "offsetParam": {
+        "in": "query",
+        "name": "offset",
+        "description": "Offset",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        }
+      },
+      "limitParam": {
+        "in": "query",
+        "name": "limit",
+        "description": "Limit",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 10
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

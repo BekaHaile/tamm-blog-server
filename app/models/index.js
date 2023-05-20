@@ -8,7 +8,6 @@ const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
   host: config.HOST,
   port: config.PORT,
   dialect: config.dialect,
-  operatorsAliases: false,
   pool: {
     max: config.pool.max,
     min: config.pool.min,
@@ -25,6 +24,6 @@ db.sequelize = sequelize;
 db.user = userModel(sequelize, Sequelize);
 db.blog = blogModel(sequelize, Sequelize);
 
-db.blog.belongsTo(db.user, { foreignKey: 'userId' });
+db.blog.belongsTo(db.user, { foreignKey: "userId" });
 
 export default db;
