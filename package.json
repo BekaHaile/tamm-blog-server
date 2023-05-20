@@ -1,0 +1,34 @@
+{
+  "name": "tamm-blog-server",
+  "version": "1.0.0",
+  "description": "Node server for blog CRUD",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest",
+    "dev": "nodemon ./app/server.js --exec babel-node -e js",
+    "start": "npm run build && node ./build/server.js",
+    "clean": "rm -rf build && mkdir build",
+    "build-babel": "babel -d ./build ./app  -s",
+    "build": "npm run clean && npm run build-babel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BekaHaile/tamm-blog-server.git"
+  },
+  "author": "Beka Haile",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BekaHaile/tamm-blog-server/issues"
+  },
+  "homepage": "https://github.com/BekaHaile/tamm-blog-server#readme",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "sequelize": "^6.31.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3"
+  }
+}
