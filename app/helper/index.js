@@ -1,5 +1,5 @@
-export const handleResult = (res, result, message) => {
-  res.status(200).send({ result });
+export const handleResult = (res, result) => {
+  res.status(200).send(result);
 };
 
 export const handleClientError = (res, message, statusCode) => {

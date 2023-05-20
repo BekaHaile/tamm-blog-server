@@ -30,8 +30,7 @@
     "jsonwebtoken": "^9.0.0",
     "pg": "^8.11.0",
     "sequelize": "^6.31.1",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.6.3"
+    "swagger-jsdoc": "^6.2.8"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.7",

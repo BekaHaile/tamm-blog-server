@@ -1,10 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
   return sequelize.define("blogs", {
     id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      allowNull: false,
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     title: {
       type: Sequelize.STRING,
@@ -13,10 +13,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     img: {
-      type: Sequelize.STRING,
-    },
-    date: {
-      type: Sequelize.DATE,
+      type: Sequelize.STRING(1024),
     },
     userId: {
       type: Sequelize.UUID,

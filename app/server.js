@@ -4,17 +4,15 @@ import cors from "cors";
 import db from "./models/index";
 import dotenv from "dotenv";
 import apiRoutes from "./routes/index";
-import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "./swagger.json";
 import cookieParser from "cookie-parser";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 import { initial } from "./init.db";
 
 const app = express();
 
 dotenv.config();
 app.use(cors({ origin: "http://localhost:3001", credentials: true }));
-
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -48,14 +46,31 @@ db.sequelize
 db.sequelize.sync({ force: false }).then(() => {
   console.log("Drop and Resync Database with { force: true }");
   //Function add a default data on initial call
-  //   initial();
-});
-
-app.all("/", (req, res) => {
-  res.redirect("/api-docs");
+  // initial();
 });
 
 app.use(`/api/${process.env.APP_VERSION}`, apiRoutes);
+
+// Swagger setup
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Tamm Blog Api",
+      version: "1.0.0",
+      description: "API documentation using Swagger",
+    },
+    servers: [
+      {
+        url: `http://localhost:${process.env.PORT || 3000}`,
+      },
+    ],
+  },
+  apis: ["./routes/index.js"],
+};
+
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
