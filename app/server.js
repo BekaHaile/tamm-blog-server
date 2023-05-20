@@ -46,7 +46,7 @@ db.sequelize
 db.sequelize.sync({ force: false }).then(() => {
   console.log("Drop and Resync Database with { force: true }");
   //Function add a default data on initial call
-  // initial();
+  initial();
 });
 
 app.use(`/api/${process.env.APP_VERSION}`, apiRoutes);
