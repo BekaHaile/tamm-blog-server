@@ -6,17 +6,21 @@ import dotenv from "dotenv";
 import apiRoutes from "./routes/index";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./swagger.json";
+import cookieParser from "cookie-parser";
 import { initial } from "./init.db";
 
 const app = express();
 
 dotenv.config();
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3001", credentials: true }));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // parse requests of content-type - application/json
 app.use(express.json());
+
+// use our cookie parser middleware
+app.use(cookieParser());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));

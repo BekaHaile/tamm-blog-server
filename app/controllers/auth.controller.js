@@ -23,17 +23,17 @@ const signup = (req, res) => {
           message: "User with the same email already exists.",
         });
       }
+
       // Save User to Database
       User.create({
         email: req.body.email,
         username: req.body.username,
         img: req.body.img,
-        password: bcrypt.hashSync(req.body.password, 8),
+        password: bcrypt.hashSync(req.body.password, 10),
       })
         .then((user) => {
           res.send({
             message: "User registered successfully!",
-            user: user,
           });
         })
         .catch((err) => {
@@ -68,24 +68,19 @@ const login = (req, res) => {
         });
       }
 
-      var token = jwt.sign(
-        { id: user.id },
-        config.secret /*{
-        expiresIn: 86400, // 24 hours
-      }*/
-      );
+      const token = jwt.sign({ id: user.id }, config.secret);
 
       let resp = {
-        user: {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          img: user.img,
-        },
-        accessToken: token,
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        img: user.img,
       };
 
-      res.status(200).send(resp);
+      res
+        .cookie("access_token", token, { httpOnly: true })
+        .status(200)
+        .send(resp);
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
