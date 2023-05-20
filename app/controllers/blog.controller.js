@@ -1,5 +1,6 @@
-import { handleResult, handleError } from "../helper";
+import { handleResult, handleError, handleClientError } from "../helper";
 import db from "../models";
+
 const Blog = db.blog;
 const User = db.user;
 
@@ -47,9 +48,17 @@ const createBlog = (req, res) => {
     title: req.body.title,
     content: req.body.content,
     img: req.body.img,
+    userId: req.userId,
   })
     .then((blog) => {
-      handleResult(res, blog);
+      const result = {
+        id: blog.id,
+        title: blog.title,
+        content: blog.content,
+        img: blog.img,
+        date: blog.createdAt,
+      };
+      handleResult(res, result);
     })
     .catch((err) => handleError(res, err));
 };
@@ -57,14 +66,14 @@ const createBlog = (req, res) => {
 const updateBlog = (req, res) => {
   Blog.update(
     { title: req.body.title, content: req.body.content, img: req.body.img },
-    { where: { _id: req.params.id } }
+    { where: { id: req.params.id } }
   )
     .then((result) => handleResult(res, result))
     .catch((err) => handleError(res, err));
 };
 
 const deleteBlog = (req, res) => {
-  Blog.update({ where: { id: req.params.id } })
+  Blog.destroy({ where: { id: req.params.id, userId: req.userId } })
     .then((result) => handleResult(res, result))
     .catch((err) => handleError(res, err));
 };

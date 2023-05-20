@@ -3,22 +3,15 @@ import config from "../config/auth.config.js";
 import { handleClientError } from "../helper";
 
 const verifyToken = (req, res, next) => {
-  let token = req.header("authorization");
-  if (!token) {
-    return handleClientError(res, "No token provided!", 403);
-  }
-  token = token.split(" ");
-  if (token.length <= 1) {
-    return handleClientError(res, "Invalid Token!", 403);
-  }
-  token = token[1];
+  const token = req.cookies.access_token;
+  console.log(token);
+  if (!token) return handleClientError(res, "Not authenticated", 401);
 
-  jwt.verify(token, config.secret, (err, decoded) => {
-    if (err) {
-      return handleClientError(res, "Unauthorized!", 401);
-    }
-    req.userId = decoded.id;
-    req.userGrade = decoded.grade;
+  jwt.verify(token, config.secret, (err, userInfo) => {
+    if (err) return handleClientError(res, "Not a valid token", 403);
+
+    req.userId = userInfo.id;
+
     next();
   });
 };
