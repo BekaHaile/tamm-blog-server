@@ -105,6 +105,32 @@
         }
       }
     },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Logout a user!",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                }
+              }
+            }
+          },
+          "description": "Logout"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/LogoutResponse"
+            }
+          }
+        }
+      }
+    },
 
     "/blogs/": {
       "get": {
@@ -187,7 +213,7 @@
     "/blogs/:id/": {
       "delete": {
         "tags": ["Blog"],
-        "summary": "Archives a single blog with the specified id",
+        "summary": "Deletes a single blog with the specified id",
         "responses": {
           "200": {
             "description": "OK",
@@ -207,23 +233,11 @@
           "email": {
             "type": "string"
           },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "gender": {
+          "username": {
             "type": "string"
           },
           "password": {
             "type": "string"
-          },
-          "roles": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
@@ -245,11 +259,18 @@
       "LoginResponse": {
         "required": ["id"],
         "properties": {
-          "user": {
             "$ref": "#/components/schemas/User"
-          },
-          "accessToken": {
-            "type": "string"
+        }
+      },
+      "LogoutRequest": {
+        "required": false,
+        "properties": {
+        }
+      },
+      "LogoutResponse": {
+        "properties": {
+          "logedOut": {
+            "type": "boolean"
           }
         }
       },
