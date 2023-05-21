@@ -91,7 +91,6 @@ const updateBlog = (req, res) => {
 };
 
 const deleteBlog = (req, res) => {
-  console.log(req.userId, " ==========");
   Blog.destroy({ where: { id: req.params.id, userId: req.userId } })
     .then((result) => handleResult(res, result.toString()))
     .catch((err) => handleError(res, err));

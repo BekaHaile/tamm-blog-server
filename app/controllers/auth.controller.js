@@ -17,7 +17,6 @@ const signup = (req, res) => {
     },
   })
     .then((user) => {
-      console.log(user);
       if (user) {
         return res.status(401).send({
           message: "User with the same email already exists.",

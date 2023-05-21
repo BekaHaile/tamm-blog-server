@@ -15,9 +15,6 @@ describe("/api/blogs", () => {
   });
   afterEach(async () => {
     server.close();
-
-    // Close the Sequelize connection
-    // await db.sequelize.close();
   });
 
   //Test for getting all blogs
