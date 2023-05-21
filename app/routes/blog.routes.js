@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", controller.getBlogs);
 router.get("/:id", controller.getBlogById);
-router.post("/", controller.createBlog);
+router.post("/", [authJwt.verifyToken], controller.createBlog);
 router.put("/:id", [authJwt.verifyToken], controller.updateBlog);
 router.delete("/:id", [authJwt.verifyToken], controller.deleteBlog);
 

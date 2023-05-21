@@ -4,7 +4,7 @@
   "description": "Node server for blog CRUD",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles",
     "dev": "nodemon ./app/server.js --exec babel-node -e js",
     "start": "npm run build && node ./build/server.js",
     "clean": "rm -rf build && mkdir build",

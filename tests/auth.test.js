@@ -28,8 +28,6 @@ describe("/api/auth", () => {
         password: "123456",
       });
 
-      console.log(res.body);
-
       expect(res.status).toBe(200);
       expect(res.body.message).toBe("User registered successfully!");
 
@@ -119,8 +117,6 @@ describe("/api/auth", () => {
       const res = await request(server).post("/api/auth/login").send({
         email: "test@gmail.com",
       });
-
-      console.log(res);
 
       expect(res.status).toBe(400);
       expect(res.body.message).toBe("Password is required!");
