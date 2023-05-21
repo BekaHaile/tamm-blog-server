@@ -14,6 +14,7 @@ const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
     acquire: config.pool.acquire,
     idle: config.pool.idle,
   },
+  logging: false,
 });
 
 const db = {};

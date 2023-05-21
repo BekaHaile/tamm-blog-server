@@ -4,7 +4,9 @@ const db = {
   HOST: `${process.env.DB_HOST}`,
   USER: `${process.env.DB_USER}`,
   PASSWORD: `${process.env.DB_PASSWORD}`,
-  DB: `${process.env.DATABASE}`,
+  DB: `${
+    process.env.ENV == "test" ? process.env.TEST_DATABASE : process.env.DATABASE
+  }`,
   PORT: process.env.DB_PORT,
   dialect: "postgres",
   pool: {

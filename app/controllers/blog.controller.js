@@ -1,4 +1,4 @@
-import { handleResult, handleError } from "../helper";
+import { handleResult, handleError, handleClientError } from "../helper";
 import db from "../models";
 
 const Blog = db.blog;
@@ -36,8 +36,8 @@ const getBlogById = (req, res) => {
         content: blog.content,
         img: blog.img,
         date: blog.createdAt,
-        author: user.username,
-        userImg: user.img,
+        author: user ? user.username : "Anonymous",
+        userImg: user ? user.img : null,
       };
       handleResult(res, result);
     })
@@ -69,11 +69,29 @@ const updateBlog = (req, res) => {
     { title: req.body.title, content: req.body.content, img: req.body.img },
     { where: { id: req.params.id } }
   )
-    .then((result) => handleResult(res, result))
-    .catch((err) => handleError(res, err));
+    .then((result) => {
+      Blog.findOne({
+        where: {
+          id: req.params.id,
+        },
+      })
+        .then(async (blog) => {
+          const result = {
+            id: blog.id,
+            title: blog.title,
+            content: blog.content,
+            img: blog.img,
+            date: blog.createdAt,
+          };
+          handleResult(res, result);
+        })
+        .catch((err) => handleError(res, err));
+    })
+    .catch((err) => handleClientError(res, "Invalid ID", 404));
 };
 
 const deleteBlog = (req, res) => {
+  console.log(req.userId, " ==========");
   Blog.destroy({ where: { id: req.params.id, userId: req.userId } })
     .then((result) => handleResult(res, result.toString()))
     .catch((err) => handleError(res, err));
