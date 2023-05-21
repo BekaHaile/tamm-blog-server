@@ -1,4 +1,4 @@
-import { handleResult, handleError, handleClientError } from "../helper";
+import { handleResult, handleError } from "../helper";
 import db from "../models";
 
 const Blog = db.blog;
@@ -9,6 +9,7 @@ const getBlogs = (req, res) => {
     offset: req.query.offset,
     limit: req.query.limit,
     attributes: ["id", "title", "content", "img", "userId"],
+    order: [["createdAt", "DESC"]],
   })
     .then((blogs) => {
       handleResult(res, blogs);
@@ -74,8 +75,12 @@ const updateBlog = (req, res) => {
 
 const deleteBlog = (req, res) => {
   Blog.destroy({ where: { id: req.params.id, userId: req.userId } })
-    .then((result) => handleResult(res, result))
+    .then((result) => handleResult(res, result.toString()))
     .catch((err) => handleError(res, err));
 };
 
-export { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog };
+const upload = (req, res) => {
+  res.status(200).send(req.file.filename);
+};
+
+export { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog, upload };

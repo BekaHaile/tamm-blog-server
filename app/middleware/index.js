@@ -1,3 +1,4 @@
 import authJwt from "./authJwt";
+import imageUpload from "./imageUpload";
 
-export { authJwt };
+export { authJwt, imageUpload };

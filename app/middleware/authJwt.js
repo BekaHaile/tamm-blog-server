@@ -19,4 +19,5 @@ const verifyToken = (req, res, next) => {
 const authJwt = {
   verifyToken: verifyToken,
 };
+
 export default authJwt;

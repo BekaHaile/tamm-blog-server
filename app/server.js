@@ -49,7 +49,7 @@ db.sequelize.sync({ force: false }).then(() => {
   initial();
 });
 
-app.use(`/api/${process.env.APP_VERSION}`, apiRoutes);
+app.use(`/api`, apiRoutes);
 
 // Swagger setup
 const swaggerOptions = {
