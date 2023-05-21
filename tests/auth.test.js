@@ -115,13 +115,26 @@ describe("/api/auth", () => {
       expect(res.body.message).toBe("Email is required!");
     });
 
-    // it("should return 400 if password is not passed", async () => {
-    //   const res = await request(server).post("/api/auth/login").send({
-    //     email: "test@gmail.com",
-    //   });
+    it("should return 400 if password is not passed", async () => {
+      const res = await request(server).post("/api/auth/login").send({
+        email: "test@gmail.com",
+      });
 
-    //     expect(res.status).toBe(400);
-    // });
+      console.log(res);
+
+      expect(res.status).toBe(400);
+      expect(res.body.message).toBe("Password is required!");
+    });
+
+    it("should return 404 if user with the same email does not exist", async () => {
+      const res = await request(server).post("/api/auth/login").send({
+        email: "test2@gmail.com",
+        password: "123456",
+      });
+
+      expect(res.status).toBe(404);
+      expect(res.body.message).toBe("User Not Found.");
+    });
   });
 
   //Close the sequelize connection after all tests

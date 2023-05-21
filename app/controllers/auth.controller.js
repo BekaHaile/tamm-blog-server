@@ -47,7 +47,10 @@ const signup = (req, res) => {
 const login = (req, res) => {
   if (!req.body.email)
     return res.status(400).send({ message: "Email is required!" });
-    
+
+  if (!req.body.password)
+    return res.status(400).send({ message: "Password is required!" });
+
   User.findOne({
     where: {
       email: req.body.email,
@@ -55,7 +58,7 @@ const login = (req, res) => {
   })
     .then(async (user) => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(404).send({ message: "User Not Found." });
       }
 
       var passwordIsValid = bcrypt.compareSync(
