@@ -1,5 +1,6 @@
 const request = require("supertest");
 import db from "../app/models";
+import bcrypt from "bcryptjs";
 
 const User = db.user;
 
@@ -14,7 +15,7 @@ describe("/api/auth", () => {
     await db.sequelize.sync();
   });
   afterEach(async () => {
-    server.close();
+    await server.close();
   });
 
   //Test for registering a user
@@ -26,6 +27,8 @@ describe("/api/auth", () => {
         img: "test",
         password: "123456",
       });
+
+      console.log(res.body);
 
       expect(res.status).toBe(200);
       expect(res.body.message).toBe("User registered successfully!");
@@ -72,6 +75,53 @@ describe("/api/auth", () => {
         },
       });
     });
+  });
+
+  //Test for logging in a user
+  describe("POST /login", () => {
+    it("should login a user if valid data is passed", async () => {
+      // Save a user to the database
+      const user = await User.create({
+        email: "test@gmail.com",
+        username: "test",
+        img: "test",
+        password: bcrypt.hashSync("123456", 10),
+      });
+
+      const res = await request(server).post("/api/auth/login").send({
+        email: "test@gmail.com",
+        password: "123456",
+      });
+
+      expect(res.status).toBe(200);
+
+      //check if user details are returned
+      expect(res.body).toHaveProperty("id");
+
+      // Clean up
+      await User.destroy({
+        where: {
+          email: "test@gmail.com",
+        },
+      });
+    });
+
+    it("should return 400 if email is not passed", async () => {
+      const res = await request(server).post("/api/auth/login").send({
+        password: "123456",
+      });
+
+      expect(res.status).toBe(400);
+      expect(res.body.message).toBe("Email is required!");
+    });
+
+    // it("should return 400 if password is not passed", async () => {
+    //   const res = await request(server).post("/api/auth/login").send({
+    //     email: "test@gmail.com",
+    //   });
+
+    //     expect(res.status).toBe(400);
+    // });
   });
 
   //Close the sequelize connection after all tests

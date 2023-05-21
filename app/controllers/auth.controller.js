@@ -45,6 +45,9 @@ const signup = (req, res) => {
 };
 
 const login = (req, res) => {
+  if (!req.body.email)
+    return res.status(400).send({ message: "Email is required!" });
+    
   User.findOne({
     where: {
       email: req.body.email,
